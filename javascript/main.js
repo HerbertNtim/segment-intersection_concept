@@ -9,22 +9,50 @@ const D = { x: 250, y: 200 };
 
 const ctx = canvas.getContext("2d");
 
-// Drawing Lines for the points
-ctx.beginPath();
-ctx.moveTo(A.x, A.y);
-ctx.lineTo(B.x, B.y);
-ctx.moveTo(C.x, C.y);
-ctx.lineTo(D.x, D.y);
-ctx.stroke();
+// Animation
+let t = -1;
+animate();
 
-drawDot(A, "A");
-drawDot(B, "B");
-drawDot(C, "C");
-drawDot(D, "D");
-
-function drawDot(point, label) {
+function animate() {
+  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+  // Drawing Lines for the points
   ctx.beginPath();
-  ctx.fillStyle = "white";
+  ctx.moveTo(A.x, A.y);
+  ctx.lineTo(B.x, B.y);
+  ctx.moveTo(C.x, C.y);
+  ctx.lineTo(D.x, D.y);
+  ctx.stroke();
+
+  drawDot(A, "A");
+  drawDot(B, "B");
+  drawDot(C, "C");
+  drawDot(D, "D");
+
+  // Getting the middle points
+  const M = {
+    x: lerp(A.x, B.x, t),
+    y: lerp(A.y, B.y, t),
+  };
+
+  const N = {
+    x: lerp(C.x, D.x, t),
+    y: lerp(C.y, D.y, t),
+  };
+
+  drawDot(M, "M", t < 0 || t > 1);
+  drawDot(N, "N", t < 0 || t > 1);
+  t += 0.005;
+
+  requestAnimationFrame(animate);
+}
+
+function lerp(A, B, t) {
+  return A + (B - A) * t;
+}
+
+function drawDot(point, label, isRed) {
+  ctx.beginPath();
+  ctx.fillStyle = isRed ? "red" : "white";
   ctx.arc(point.x, point.y, 10, 0, Math.PI * 2);
   ctx.fill();
   ctx.stroke();
