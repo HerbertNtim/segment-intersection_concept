@@ -15,16 +15,16 @@ const mouse = { x: 0, y: 0 };
 document.onmousemove = (event) => {
   mouse.x = event.x;
   mouse.y = event.y;
-}
+};
 
 // Animation
 animate();
 
 function animate() {
-  // Mouse animation 
+  // Mouse animation
   const radius = 50;
-  A.x =  mouse.x + Math.cos(angle) * radius;
-  A.y =  mouse.y - Math.sin(angle) * radius;
+  A.x = mouse.x + Math.cos(angle) * radius;
+  A.y = mouse.y - Math.sin(angle) * radius;
   B.x = mouse.x - Math.cos(angle) * radius;
   B.y = mouse.y + Math.sin(angle) * radius;
   angle += 0.02;
@@ -58,8 +58,11 @@ function animate() {
   // drawDot(N, "N", t < 0 || t > 1);
 
   const I = getIntersection(A, B, C, D);
-  drawDot(I, "I");
 
+  if (I) {
+    drawDot(I, "I");
+  }
+  
   requestAnimationFrame(animate);
 }
 
@@ -75,12 +78,19 @@ function getIntersection(A, B, C, D) {
   const top = (D.x - C.x) * (A.y - C.y) - (D.y - C.y) * (A.x - C.x);
   const bottom = (D.y - C.y) * (B.x - A.x) - (D.x - C.x) * (B.y - A.y);
 
-  const t = top / bottom;
+  if (bottom != 0) {
+    const t = top / bottom;
 
-  return {
-    x: lerp(A.x, B.x, t),
-    y: lerp(A.y, B.y, t),
-  };
+    if (t >= 0 && t <= 1) {
+      return {
+        x: lerp(A.x, B.x, t),
+        y: lerp(A.y, B.y, t),
+        offset: t,
+      };
+    }
+  }
+
+  return null;
 }
 
 function lerp(A, B, t) {
