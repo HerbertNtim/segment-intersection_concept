@@ -9,11 +9,27 @@ const D = { x: 250, y: 200 };
 
 const ctx = canvas.getContext("2d");
 
+// Mouse Movement
+let angle = 0;
+const mouse = { x: 0, y: 0 };
+document.onmousemove = (event) => {
+  mouse.x = event.x;
+  mouse.y = event.y;
+}
+
 // Animation
 animate();
 
 function animate() {
-  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+  // Mouse animation 
+  const radius = 50;
+  A.x =  mouse.x + Math.cos(angle) * radius;
+  A.y =  mouse.y - Math.sin(angle) * radius;
+  B.x = mouse.x - Math.cos(angle) * radius;
+  B.y = mouse.y + Math.sin(angle) * radius;
+  angle += 0.02;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   // Drawing Lines for the points
   ctx.beginPath();
   ctx.moveTo(A.x, A.y);
@@ -43,8 +59,6 @@ function animate() {
 
   const I = getIntersection(A, B, C, D);
   drawDot(I, "I");
-  
-  t += 0.005;
 
   requestAnimationFrame(animate);
 }
