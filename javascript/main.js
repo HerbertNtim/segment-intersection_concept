@@ -10,7 +10,6 @@ const D = { x: 250, y: 200 };
 const ctx = canvas.getContext("2d");
 
 // Animation
-let t = -1;
 animate();
 
 function animate() {
@@ -29,18 +28,18 @@ function animate() {
   drawDot(D, "D");
 
   // Getting the middle points
-  const M = {
-    x: lerp(A.x, B.x, t),
-    y: lerp(A.y, B.y, t),
-  };
+  // const M = {
+  //   x: lerp(A.x, B.x, t),
+  //   y: lerp(A.y, B.y, t),
+  // };
 
-  const N = {
-    x: lerp(C.x, D.x, t),
-    y: lerp(C.y, D.y, t),
-  };
+  // const N = {
+  //   x: lerp(C.x, D.x, t),
+  //   y: lerp(C.y, D.y, t),
+  // };
 
-  drawDot(M, "M", t < 0 || t > 1);
-  drawDot(N, "N", t < 0 || t > 1);
+  // drawDot(M, "M", t < 0 || t > 1);
+  // drawDot(N, "N", t < 0 || t > 1);
 
   const I = getIntersection(A, B, C, D);
   drawDot(I, "I");
@@ -66,7 +65,7 @@ function getIntersection(A, B, C, D) {
 
   return {
     x: lerp(A.x, B.x, t),
-    y: lerp(C.y, D.y, t),
+    y: lerp(A.y, B.y, t),
   };
 }
 
